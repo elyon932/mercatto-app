@@ -1,0 +1,886 @@
+Gerenciador:
+    Tela1:
+    Tela2:
+    Tela3:
+    Tela4:
+    Tela5:
+    Tela6:
+    Tela7:
+    Tela8:
+    Tela9:
+    Tela10:
+    Tela11:
+    Tela12:
+    Tela13:
+    Tela14:
+
+<Tela1>:
+    name: 'first'
+
+    MDFloatLayout:
+        md_bg_color: 0.678, 0.847, 0.902, 1  # azul claro
+
+        MDCard:
+            id: cardlog
+            size_hint: 0.7, 0.6  # Ajusta dinamicamente ao tamanho da tela
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            elevation: 10
+            padding: dp(20)
+            spacing: dp(20)
+            orientation: "vertical"
+            md_bg_color: 1, 1, 1, 1  # Branco
+
+            MDIcon:
+                id: iconlog
+                icon: "lock"
+                halign: "center"
+                valign: "middle"
+                size: "32dp", "32dp"
+                font_size: sp(60)
+                theme_text_color: "Secondary"
+                pos_hint: {"center_x": 0.5}
+
+            MDWidget:  # Widget invisível para dar espaço
+                id: wid
+                size_hint_y: None
+                height: dp(15)
+
+            MDLabel:
+                id: welcome
+                text: 'Bem-vindo'
+                font_style: 'H5'
+                halign: "center"
+                size_hint_y: None
+                height: self.texture_size[1]
+
+            MDTextField:
+                id: user
+                hint_text: "Username"
+                icon_right: "account"
+                mode: 'round'
+                size_hint_x: 0.85
+                font_size: sp(22)
+                pos_hint: {"center_x": 0.5}
+
+            MDTextField:
+                id: password
+                hint_text: "Password"
+                icon_right: "eye-off"
+                mode: 'round'
+                size_hint_x: 0.85
+                font_size: sp(22)
+                pos_hint: {"center_x": 0.5}
+                password: True
+                on_touch_down: app.ativar_desativar_senha_login(self, args[1])
+
+            MDRaisedButton:
+                text: 'LOG IN'
+                size_hint_x: 0.7
+                pos_hint: {"center_x": 0.5}
+                font_size: sp(22)
+                on_release: app.logar()
+
+            MDRaisedButton:
+                text: 'CLEAR'
+                size_hint_x: 0.7
+                pos_hint: {"center_x": 0.5}
+                font_size: sp(22)
+                on_release: app.clear()
+
+            MDWidget:  # Widget invisível para dar espaço
+                size_hint_y: None
+                height: dp(15)  # Altura do espaço desejado
+
+<DrawerClickableItem@MDNavigationDrawerItem>:
+    focus_color: "#e7e4c0"
+    text_color: "#FFFFFF"
+    icon_color: "#FFFFFF"
+    ripple_color: "#c5bdd2"
+    selected_color: "#FFFFFF"
+
+<Tela2>:
+    name: 'second'
+
+    MDScreen:
+
+        MDNavigationLayout:
+
+            MDScreenManager:
+
+                MDScreen:
+                    MDBoxLayout:
+                        orientation: 'vertical'
+
+                        MDTopAppBar:
+                            title: "Vendas"
+                            elevation: 4
+                            md_bg_color: "#FFA500"
+                            specific_text_color: "#FFFFFF"
+                            left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+                            pos_hint: {"top": 1}
+
+                        MDScreen:
+
+                            MDBoxLayout:
+                                orientation: 'horizontal'
+
+                                MDBoxLayout:
+                                    orientation: 'vertical'
+                                    canvas.after:
+                                        Color:
+                                            rgba: 1, 1, 1, 1
+                                        Line:
+                                            points: [self.x+self.width, self.y, self.x+self.width, self.y+self.height]
+                                            width: 1
+
+                                    MDScrollView:
+
+                                        MDList:
+                                            id: container_produto_catalogo
+
+                                MDBoxLayout:
+                                    orientation: 'vertical'
+
+                                    MDBoxLayout:
+                                        orientation: 'horizontal'
+                                        canvas.after:
+                                            Color:
+                                                rgba: 1, 1, 1, 1
+                                            Line:
+                                                points: [self.x, self.y, self.x + self.width, self.y]
+                                                width: 1
+
+                                        MDScrollView:
+
+                                            MDList:
+                                                id: container_venda_catalogo
+
+                                    MDBoxLayout:
+                                        orientation: 'vertical'
+                                        padding: dp(10)
+                                        spacing: dp(10)
+
+                                        # Linha de DECRÉSCIMOS
+                                        MDBoxLayout:
+                                            orientation: 'horizontal'
+                                            spacing: dp(10)
+                                            # Deixamos a altura dinâmica de acordo com o conteúdo
+                                            size_hint_y: None
+                                            height: self.minimum_height
+
+                                            # Box para empilhar os botões verticalmente
+                                            MDBoxLayout:
+                                                orientation: 'vertical'
+                                                # Ajuste de tamanho para caber 2 botões empilhados (cada um 50x60)
+                                                size_hint: (None, None)
+                                                width: dp(50)          # Largura fixa para os botões
+                                                height: self.minimum_height
+                                                spacing: dp(10)
+
+                                                MDRaisedButton:
+                                                    text: "[b]-[/b]"
+                                                    markup: True
+                                                    size_hint: (1, None)
+                                                    height: dp(50)
+                                                    md_bg_color: (1, 0, 0, 1)
+                                                    text_color: (1, 1, 1, 1)
+                                                    on_release: root.verificar_tirar_decrescentar()
+
+                                                MDRaisedButton:
+                                                    text: "[b]+[/b]"
+                                                    markup: True
+                                                    size_hint: (1, None)
+                                                    height: dp(50)
+                                                    md_bg_color: (0, 0.5, 1, 1)
+                                                    text_color: (1, 1, 1, 1)
+                                                    on_release: root.verificar_colocar_decrescentar()
+
+                                            # Label à direita (expande na horizontal)
+                                            MDLabel:
+                                                id: dc
+                                                text: "Decréscimos:\nR$0.00"
+                                                halign: "center"
+                                                valign: "middle"
+                                                # text_size faz o texto quebrar se faltar espaço
+                                                text_size: self.size
+                                                size_hint_x: 1
+                                                # Se quiser ter certeza que ele não seja encurtado,
+                                                # pode usar shorten: False (padrão já é False)
+
+                                        # Linha de ACRÉSCIMOS
+                                        MDBoxLayout:
+                                            orientation: 'horizontal'
+                                            spacing: dp(10)
+                                            size_hint_y: None
+                                            height: self.minimum_height
+
+                                            # Box para empilhar os botões verticalmente
+                                            MDBoxLayout:
+                                                orientation: 'vertical'
+                                                size_hint: (None, None)
+                                                width: dp(50)
+                                                height: self.minimum_height
+                                                spacing: dp(10)
+
+                                                MDRaisedButton:
+                                                    text: "[b]-[/b]"
+                                                    markup: True
+                                                    size_hint: (1, None)
+                                                    height: dp(50)
+                                                    md_bg_color: (1, 0, 0, 1)
+                                                    text_color: (1, 1, 1, 1)
+                                                    on_release: root.verificar_tirar_acrescentar()
+
+                                                MDRaisedButton:
+                                                    text: "[b]+[/b]"
+                                                    markup: True
+                                                    size_hint: (1, None)
+                                                    height: dp(50)
+                                                    md_bg_color: (0, 0.5, 1, 1)
+                                                    text_color: (1, 1, 1, 1)
+                                                    on_release: root.verificar_colocar_acrescentar()
+
+                                            # Label à direita
+                                            MDLabel:
+                                                id: ac
+                                                text: "Acréscimos:\nR$0.00"
+                                                halign: "center"
+                                                valign: "middle"
+                                                text_size: self.size
+                                                size_hint_x: 1
+
+                                        # Exemplo final de "Cobrar" e "Cancelar", se precisar
+                                        MDBoxLayout:
+                                            orientation: 'vertical'
+                                            spacing: dp(10)
+                                            size_hint_y: 1
+
+                                            MDRaisedButton:
+                                                id: valor_cobrar
+                                                text: "Cobrar:\nR$0.00"
+                                                size_hint_x: 1
+                                                size_hint_y: 1
+                                                md_bg_color: (0, 0.5, 1, 1)
+                                                text_color: (1, 1, 1, 1)
+                                                on_release:
+                                                    root.verificar_total_cobrar()
+                                                    root.verificar_valor_cobrar()
+
+                                            MDRaisedButton:
+                                                text: "Cancelar compra"
+                                                size_hint_x: 1
+                                                size_hint_y: 1
+                                                md_bg_color: (1, 0, 0, 1)
+                                                text_color: (1, 1, 1, 1)
+                                                on_release:
+                                                    root.verificar_total_cobrar()
+                                                    root.cancelar_compra()
+
+
+            MDNavigationDrawer:
+                id: nav_drawer
+                radius: (0, 16, 16, 0)
+
+                MDNavigationDrawerMenu:
+
+                    MDNavigationDrawerHeader:
+                        title: "Informações extras"
+                        title_color: "#FFFFFF"
+                        spacing: "4dp"
+                        padding: "12dp", 0, 0, "56dp"
+
+                    MDNavigationDrawerLabel:
+                        text: "Funções"
+                        text_color: "#FFFFFF"
+
+                    DrawerClickableItem:
+                        icon: "information-outline"
+                        text: "Cadastros"
+                        text_color: "#FFFFFF"
+                        on_release:
+                            root.manager.transition.direction = 'left'
+                            root.manager.current = 'third'
+                            nav_drawer.set_state("close")
+
+                    DrawerClickableItem:
+                        icon: "information-outline"
+                        text: "Pedidos em aberto"
+                        text_color: "#FFFFFF"
+                        on_release:
+                            root.manager.transition.direction = 'left'
+                            root.manager.current = 'four'
+                            nav_drawer.set_state("close")
+
+                    DrawerClickableItem:
+                        icon: "information-outline"
+                        text: "Consultar vendas"
+                        text_color: "#FFFFFF"
+                        on_release:
+                            root.manager.transition.direction = 'left'
+                            root.manager.current = 'five'
+                            nav_drawer.set_state("close")
+
+                    DrawerClickableItem:
+                        icon: "information-outline"
+                        text: "Consultar devoluções"
+                        text_color: "#FFFFFF"
+                        on_release:
+                            root.manager.transition.direction = 'left'
+                            root.manager.current = 'six'
+                            nav_drawer.set_state("close")
+
+                    DrawerClickableItem:
+                        icon: "information-outline"
+                        text: "Consultar estoque"
+                        text_color: "#FFFFFF"
+                        on_release:
+                            root.manager.transition.direction = 'left'
+                            root.manager.current = 'seven'
+                            nav_drawer.set_state("close")
+
+                    MDNavigationDrawerDivider:
+
+                    MDNavigationDrawerLabel:
+                        text: 'Extras'
+
+                    DrawerClickableItem:
+                        icon: "logout"
+                        text: "Logout"
+                        text_color: "#FFFFFF"
+                        on_release:
+                            root.manager.transition.direction = 'right'
+                            root.manager.current = 'first'
+                            root.manager.get_screen('second').cancelar_compra()
+                            nav_drawer.set_state("close")
+                            app.ativar_desativar_check()
+                            app.clear()
+
+
+<ItemConfirm>
+    CheckboxLeftWidget:
+        id: check
+        group: "check"
+
+
+<Tela3>:
+    name: 'third'
+
+    MDFloatLayout:
+        MDTopAppBar:
+            title: "Cadastros"
+            left_action_items: [["arrow-left", lambda x: (setattr(root.manager, 'current', 'second'), setattr(root.manager.transition, 'direction', 'right'))]]
+            pos_hint: {"top": 1}
+
+        GridLayout:
+            cols: 1  # Três colunas
+            rows: 6  # Duas linhas
+            spacing: dp(20)  # Espaço entre os botões
+            size_hint: 0.9, None  # Largura ajustável, altura fixa
+            height: dp(300)  # Altura fixa do layout
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}  # Centraliza na tela
+
+            MDFillRoundFlatButton:
+                text: 'CATEGORIA'
+                md_bg_color: "orange"
+                text_color: "black"
+                font_size: dp(24)
+                size_hint: 1, None  # O botão ocupa toda a célula do GridLayout
+                height: dp(60)
+                on_release:
+                    root.manager.get_screen('ten').atualizar_categoria()
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = 'eight'
+
+            MDFillRoundFlatButton:
+                text: 'PRODUTOS'
+                md_bg_color: "orange"
+                text_color: "black"
+                font_size: dp(24)
+                size_hint: 1, None
+                height: dp(60)
+                on_release:
+                    root.manager.get_screen('eleven').adicionar_lista()
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = 'nine'
+
+            MDFillRoundFlatButton:
+                text: 'MODIFICADOR'
+                md_bg_color: "orange"
+                text_color: "black"
+                font_size: dp(24)
+                size_hint: 1, None
+                height: dp(60)
+                on_release:
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = 'fourteen'
+
+            MDFillRoundFlatButton:
+                text: 'FORNECEDOR'
+                md_bg_color: "orange"
+                text_color: "black"
+                font_size: dp(24)
+                size_hint: 1, None
+                height: dp(60)
+                on_release:
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = 'fourteen'
+
+            MDFillRoundFlatButton:
+                text: 'CLIENTE'
+                md_bg_color: "orange"
+                text_color: "black"
+                font_size: dp(24)
+                size_hint: 1, None
+                height: dp(60)
+                on_release:
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = 'fourteen'
+
+            MDFillRoundFlatButton:
+                text: 'VENDEDOR'
+                md_bg_color: "orange"
+                text_color: "black"
+                font_size: dp(24)
+                size_hint: 1, None
+                height: dp(60)
+                on_release:
+                    root.manager.transition.direction = 'left'
+                    root.manager.current = 'fourteen'
+
+
+<Tela4>:
+    name: 'four'
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDTopAppBar:
+            title: "Pedidos em aberto"
+            left_action_items: [["arrow-left", lambda x: (setattr(root.manager, 'current', 'second'), setattr(root.manager.transition, 'direction', 'right'))]]
+
+        MDLabel:
+            text: "Content"
+            halign: "center"
+
+<Tela5>:
+    name: 'five'
+
+    MDBoxLayout:
+        id: box_vendas
+        orientation: "vertical"
+
+        MDTopAppBar:
+            title: "Consultar vendas"
+            left_action_items: [["arrow-left", lambda x: (setattr(root.manager, 'current', 'second'), setattr(root.manager.transition, 'direction', 'right'))]]
+
+        ScrollView:
+
+            BoxLayout:
+                id: container_vendas
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+                padding: 10  # Adiciona espaçamento nas bordas do container
+                spacing: 10  # Espaçamento entre os widgets
+
+<Tela6>:
+    name: 'six'
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDTopAppBar:
+            title: "Consultar devoluções"
+            left_action_items: [["arrow-left", lambda x: (setattr(root.manager, 'current', 'second'), setattr(root.manager.transition, 'direction', 'right'))]]
+
+        MDLabel:
+            text: "Content"
+            halign: "center"
+
+<Tela7>:
+    name: 'seven'
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDTopAppBar:
+            title: "Consultar estoque"
+            left_action_items: [["arrow-left", lambda x: (setattr(root.manager, 'current', 'second'), setattr(root.manager.transition, 'direction', 'right'))]]
+
+        MDLabel:
+            text: "Content"
+            halign: "center"
+
+<Tela8>:
+    name: 'eight'
+
+    BoxLayout:
+        orientation: "vertical"
+
+        MDTopAppBar:
+            title: "Cadastro de categorias"
+            left_action_items: [["arrow-left", lambda x: (setattr(root.manager, 'current', 'third'), setattr(root.manager.transition, 'direction', 'right'))]]
+            right_action_items: [["plus", lambda x: (root.atualizar_widgets_categorias(), setattr(root.manager, 'current', 'ten'), setattr(root.manager.transition, 'direction', 'left'))]]
+            pos_hint: {"top": 1}
+
+        Screen:
+
+            ScrollView:
+
+                MDList:
+                    id: container_categoria
+
+<Tela9>:
+    name: 'nine'
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            title: "Cadastro de produtos"
+            left_action_items: [["arrow-left", lambda x: (setattr(root.manager, 'current', 'third'), setattr(root.manager.transition, 'direction', 'right'))]]
+            right_action_items: [["plus", lambda x: (root.atualizar_widgets_produtos(), setattr(root.manager, 'current', 'eleven'), setattr(root.manager.transition, 'direction', 'left'))]]
+            pos_hint: {"top": 1}
+
+        Screen:
+
+            ScrollView:
+
+                MDList:
+                    id: container
+
+<Tela10>:
+    name: 'ten'
+
+    MDFloatLayout:
+        orientation: "vertical"
+
+        MDTopAppBar:
+            title: "Nova categoria"
+            left_action_items: [["arrow-left", lambda x: (setattr(root.manager, 'current', 'eight'), setattr(root.manager.transition, 'direction', 'right'))]]
+            right_action_items: [["check", lambda x: (root.adicionar_categoria())]]
+            pos_hint: {"top": 1}
+
+        MDTextField:
+            id: categoria
+            pos_hint: {'center_x':0.5, 'center_y':0.5}
+            size_hint: (0.3, None)
+            hint_text: "Nome da categoria"
+            multiline: False
+            opacity: 1
+            disabled: False
+
+<Tela11>:
+    name: 'eleven'
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            title: "Novo produto"
+            left_action_items: [["arrow-left", lambda x: (setattr(root.ids.check, 'active', False), setattr(root.manager, 'current', 'nine'), setattr(root.manager.transition, 'direction', 'right'))]]
+            right_action_items: [["check", lambda x: (root.adicionar_produto(), root.manager.get_screen('second').produto_catalogo(), root.adicionar_lista())]]
+            pos_hint: {"top": 1}
+
+        Screen:
+
+            ScrollView:
+
+                MDGridLayout:
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
+                    padding: dp(20)
+
+                    MDBoxLayout:
+                        orientation: "horizontal"
+                        size_hint_y: None
+                        height: dp(48)
+
+                        MDLabel:
+                            id: label_categorias
+                            text: 'Nenhum'
+                            font_size: 35
+
+                        MDIconButton:
+                            id: menu_categorias
+                            icon: 'arrow-down-drop-circle'
+                            user_font_size: "8sp"
+                            size_hint: None, None
+                            size: dp(8), dp(8)
+                            on_release: root.acionar_menu()
+
+                    MDTextField:
+                        id: codigo
+                        hint_text: "Código (Opcional)"
+                        multiline: False
+                        opacity: 1
+                        disabled: False
+                        size_hint_y: None
+                        height: dp(48)
+
+                    MDTextField:
+                        id: descricao
+                        hint_text: "Nome"
+                        multiline: False
+                        opacity: 1
+                        disabled: False
+                        size_hint_y: None
+                        height: dp(48)
+
+                    MDTextField:
+                        id: valor_custo
+                        hint_text: "Valor de custo"
+                        multiline: False
+                        opacity: 1
+                        disabled: False
+                        input_filter: 'float'
+                        size_hint_y: None
+                        height: dp(48)
+
+                    MDTextField:
+                        id: valor_venda
+                        hint_text: "Valor de venda"
+                        multiline: False
+                        opacity: 1
+                        disabled: False
+                        input_filter: 'float'
+                        size_hint_y: None
+                        height: dp(48)
+
+                    MDTextField:
+                        id: estoque_minimo
+                        hint_text: "Estoque mínimo"
+                        multiline: False
+                        opacity: 1
+                        disabled: False
+                        size_hint_y: None
+                        height: dp(48)
+
+                    MDTextField:
+                        id: estoque_atual
+                        hint_text: "Estoque atual"
+                        multiline: False
+                        opacity: 1
+                        disabled: False
+                        size_hint_y: None
+                        height: dp(48)
+
+                    MDTextField:
+                        id: codigo_de_barras
+                        hint_text: "Código de barras (Opcional)"
+                        multiline: False
+                        opacity: 1
+                        disabled: False
+                        size_hint_y: None
+                        height: dp(48)
+
+                    MDTextField:
+                        id: observacoes
+                        hint_text: "Observações (Opcional)"
+                        multiline: False
+                        opacity: 1
+                        disabled: False
+                        size_hint_y: None
+                        height: dp(48)
+
+                    MDBoxLayout:
+                        orientation: "horizontal"
+                        size_hint_y: None
+                        height: dp(48)
+
+                        MDCheckbox:
+                            id: check
+                            size_hint: None, None
+                            size: "48dp", "48dp"
+                            pos_hint: {'center_x': .5, 'center_y': .5}
+                            color_inactive: "blue"
+                            color_active: "red"
+
+                        MDLabel:
+                            id: mostrar_produto
+                            text: 'Mostrar no catálogo'
+                            font_size: 35
+
+                        Widget:
+                            size_hint_y: None
+                            height: 50
+
+<Tela12>
+    name: 'twelve'
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            title: "Editar produto"
+            left_action_items: [["arrow-left", lambda x: (setattr(root.manager, 'current', 'nine'), setattr(root.manager.transition, 'direction', 'right'))]]
+            right_action_items: [["delete", lambda x: (root.manager.get_screen('second').produto_catalogo(), root.deletar_produto(), root.manager.get_screen('second').cancelar_compra())], ["check", lambda x: (root.substituir_produto(), root.manager.get_screen('second').produto_catalogo())]]
+            pos_hint: {"top": 1}
+
+        Screen:
+
+            ScrollView:
+
+                MDGridLayout:
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
+                    padding: dp(20)
+
+                    MDBoxLayout:
+                        orientation: "horizontal"
+                        size_hint_y: None
+                        height: dp(48)
+
+                        MDLabel:
+                            id: label_categorias2
+                            text: 'Nenhum'
+                            font_size: 35
+
+                        MDIconButton:
+                            id: menu_categorias2
+                            icon: 'arrow-down-drop-circle'
+                            user_font_size: "8sp"
+                            size_hint: None, None
+                            size: dp(8), dp(8)
+                            on_release: root.manager.get_screen('twelve').acionar_menu2()
+
+                    MDTextField:
+                        id: codigo2
+                        hint_text: "Código (Opcional)"
+                        multiline: False
+                        opacity: 1
+                        disabled: False
+                        size_hint_y: None
+                        height: dp(48)
+
+                    MDTextField:
+                        id: descricao2
+                        hint_text: "Nome"
+                        multiline: False
+                        opacity: 1
+                        disabled: False
+                        size_hint_y: None
+                        height: dp(48)
+
+                    MDTextField:
+                        id: valor_custo2
+                        hint_text: "Valor de custo"
+                        multiline: False
+                        opacity: 1
+                        disabled: False
+                        input_filter: 'float'
+                        size_hint_y: None
+                        height: dp(48)
+
+                    MDTextField:
+                        id: valor_venda2
+                        hint_text: "Valor de venda"
+                        multiline: False
+                        opacity: 1
+                        disabled: False
+                        input_filter: 'float'
+                        size_hint_y: None
+                        height: dp(48)
+
+                    MDTextField:
+                        id: estoque_minimo2
+                        hint_text: "Estoque mínimo"
+                        multiline: False
+                        opacity: 1
+                        disabled: False
+                        size_hint_y: None
+                        height: dp(48)
+
+                    MDTextField:
+                        id: estoque_atual2
+                        hint_text: "Estoque atual"
+                        multiline: False
+                        opacity: 1
+                        disabled: False
+                        size_hint_y: None
+                        height: dp(48)
+
+                    MDTextField:
+                        id: codigo_de_barras2
+                        hint_text: "Código de barras (Opcional)"
+                        multiline: False
+                        opacity: 1
+                        disabled: False
+                        size_hint_y: None
+                        height: dp(48)
+
+                    MDTextField:
+                        id: observacoes2
+                        hint_text: "Observações (Opcional)"
+                        multiline: False
+                        opacity: 1
+                        disabled: False
+                        size_hint_y: None
+                        height: dp(48)
+
+                    MDBoxLayout:
+                        orientation: "horizontal"
+                        size_hint_y: None
+                        height: dp(48)
+
+                        MDCheckbox:
+                            id: check2
+                            size_hint: None, None
+                            size: "48dp", "48dp"
+                            pos_hint: {'center_x': .5, 'center_y': .5}
+                            color_inactive: "blue"
+                            color_active: "red"
+
+                        MDLabel:
+                            id: mostrar_produto2
+                            text: 'Mostrar no catálogo'
+                            font_size: 35
+
+                        Widget:
+                            size_hint_y: None
+                            height: 50
+
+<Tela13>
+    name: 'thirteen'
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            title: "Editar categroia"
+            left_action_items: [["arrow-left", lambda x: (setattr(root.manager, 'current', 'eight'), setattr(root.manager.transition, 'direction', 'right'))]]
+            right_action_items: [["delete", lambda x: (root.deletar_categoria())], ["check", lambda x: root.substituir_categoria()]]
+            pos_hint: {"top": 1}
+
+        Screen:
+
+            ScrollView:
+
+                MDFloatLayout:
+                    orientation: "vertical"
+
+                    MDTextField:
+                        id: categoria2
+                        pos_hint: {'center_x':0.5, 'center_y':0.5}
+                        size_hint: (0.3, None)
+                        hint_text: "Nome da categoria"
+                        multiline: False
+                        opacity: 1
+                        disabled: False
+
+<Tela14>:
+    name: 'fourteen'
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDTopAppBar:
+            title: "Conteúdo Indisponível"
+            left_action_items: [["arrow-left", lambda x: (setattr(root.manager, 'current', 'third'), setattr(root.manager.transition, 'direction', 'right'))]]
+
+        MDLabel:
+            text: "Nada aqui ainda"
+            halign: "center"
+
